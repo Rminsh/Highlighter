@@ -1,12 +1,12 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.7
 
 import PackageDescription
 
 let package = Package(
     name: "Highlightr",
     platforms: [
-        .macOS(.v10_11),
-        .iOS(.v8),
+        .macOS(.v10_13),
+        .iOS(.v11),
     ],
     products: [
         .library(
