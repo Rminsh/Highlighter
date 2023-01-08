@@ -24,7 +24,7 @@ let package = Package(
                 "Assets/Highlighter/LICENSE",
             ],
             sources: [
-                "Classes",
+                "Highlightr",
             ],
             resources: [
                 .copy("Assets/Highlighter/highlight.min.js"),
