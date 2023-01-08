@@ -1,50 +1,23 @@
 # Highlighter
 
-[![License](https://img.shields.io/cocoapods/l/Highlightr.svg?style=flat)](http://cocoapods.org/pods/Highlightr)
+![highlight.js version](https://img.shields.io/badge/highlight.js-11.7.0-yellow?logo=javascript)
 ![Supported platforms](https://img.shields.io/badge/Platforms-iOS%2013.0+%20|%20macOS%2011.0-white?logo=apple)
 
-Highlightr is an iOS & macOS syntax highlighter built with Swift. It uses [highlight.js](https://highlightjs.org/) as it core, supports [185 languages and comes with 89 styles](https://highlightjs.org/static/demo/).
+Highlighter is an iOS & macOS syntax highlighter built with Swift. This library is forked of original [Highlightr](https://github.com/raspu/Highlightr) and combined with [Code Editor](https://github.com/ZeeZide/CodeEditor). Also it uses [highlight.js](https://highlightjs.org/) as it core, supports [185 languages and comes with 89 styles](https://highlightjs.org/static/demo/).
 
-Takes your lame string with code and returns a NSAttributtedString with proper syntax highlighting.
+The real reason behind this fork is to use latest version of highlight.js and it's newer themes. You can show your highlighted string with CodeEditor or return it as a NSAttributtedString with proper syntax highlighting with the massive help of Highlightr.
 
-![Sample Gif A](./Preview/mix2.gif)
-![Sample Gif B](./Preview/coding.gif)
+## Preview
+<img src="preview.png" height="400"/>
 
 ## Installation
-### Requirements
-- iOS 13.0+
-- macOS 11.0+
 
 ### Swift Package Manager
 
-The Swift package URL is: `https://github.com/TricksSwift/Highlighter.git`
+The Swift package URL is: `https://github.com/Rminsh/Highlighter.git`
 
 ## Usage
-Highlighter provides two main classes:
-
-### Highlighter
-This is the main endpoint, you can use it to convert code strings into NSAttributed strings.
-```Swift
-	let highlightr = Highlightr()
-	highlightr.setTheme(to: "paraiso-dark")
-	let code = "let a = 1"
-	// You can omit the second parameter to use automatic language detection.
-	let highlightedCode = highlightr.highlight(code, as: "swift") 
-	
-```
-### CodeAttributedString
-A subclass of NSTextStorage, you can use it to highlight text on real time.
-```Swift
-	let textStorage = CodeAttributedString()
-	textStorage.language = "Swift"
-	let layoutManager = NSLayoutManager()
-	textStorage.addLayoutManager(layoutManager)
-
-	let textContainer = NSTextContainer(size: view.bounds.size)
-	layoutManager.addTextContainer(textContainer)
-
-	let textView = UITextView(frame: yourFrame, textContainer: textContainer)
-```
+See [Code Editor](https://github.com/ZeeZide/CodeEditor) and [Highlightr](https://github.com/raspu/Highlightr).
 
 ## JavaScript?
 
@@ -56,12 +29,10 @@ It will never be as fast as a native solution, but it's fast enough to be used o
 
 It comes with a custom made HTML parser for creating NSAttributtedStrings, is pre-processing the themes and is preloading the JS libraries. As result it's taking around of 50 ms on my iPhone 6s for processing 500 lines of code.
 
-## Documentation
-
-You can find the documentation for the latest release on [cocoadocs](http://cocoadocs.org/docsets/Highlightr/).
-
 ## License
 
-Highlighter is available under the MIT license. See the LICENSE file for more info.
+This library is available under the MIT license. See the LICENSE file for more info.
 
-Highlight.js is available under the BSD license. You can find the [license file here](https://github.com/isagalaev/highlight.js/blob/master/LICENSE).
+Highlight.js is available under the [BSD license](https://github.com/isagalaev/highlight.js/blob/master/LICENSE).
+Highlightr (iOS & macOS library) is available under the [MIT license](https://github.com/raspu/Highlightr/blob/master/LICENSE).
+CodeEditor is available under the [MIT license](https://github.com/ZeeZide/CodeEditor/blob/main/LICENSE).
