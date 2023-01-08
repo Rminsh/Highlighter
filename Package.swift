@@ -19,7 +19,7 @@ let package = Package(
         .target(
             name: "Highlighter",
             dependencies: [],
-            path: "Pod",
+            path: "Sources",
             exclude: [
                 "Assets/Highlighter/LICENSE",
             ],
