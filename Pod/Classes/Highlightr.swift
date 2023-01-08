@@ -188,15 +188,9 @@ open class Highlightr {
             var ended = false
             var didScanUpToHtmlStart = false
             
-            if #available(iOS 13.0, OSX 10.15, *) {
-                if let string = scanner.scanUpToString(htmlStart) {
-                    scannedString = string as NSString
-                    didScanUpToHtmlStart = true
-                }
-            } else {
-                if scanner.scanUpTo(htmlStart, into: &scannedString) {
-                    didScanUpToHtmlStart = true
-                }
+            if let string = scanner.scanUpToString(htmlStart) {
+                scannedString = string as NSString
+                didScanUpToHtmlStart = true
             }
             
             if didScanUpToHtmlStart && scanner.isAtEnd {
@@ -212,44 +206,23 @@ open class Highlightr {
             }
             
             var nextChar: String
-            if #available(iOS 13.0, OSX 10.15, *) {
-                scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
-                nextChar = String(scanner.string[scanner.currentIndex])
-            } else {
-                scanner.scanLocation += 1
-                let string = scanner.string as NSString
-                nextChar = string.substring(with: NSMakeRange(scanner.scanLocation, 1))
-            }
+            scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
+            nextChar = String(scanner.string[scanner.currentIndex])
             
             if(nextChar == "s") {
-                if #available(iOS 13.0, OSX 10.15, *) {
-                    scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: spanStart.count)
-                    if let string = scanner.scanUpToString(spanStartClose) {
-                        scannedString = string as NSString
-                    }
-                    scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: spanStartClose.count)
-                    propStack.append(scannedString! as String)
-                } else {
-                    scanner.scanLocation += (spanStart as NSString).length
-                    scanner.scanUpTo(spanStartClose, into:&scannedString)
-                    scanner.scanLocation += (spanStartClose as NSString).length
-                    propStack.append(scannedString! as String)
+                scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: spanStart.count)
+                if let string = scanner.scanUpToString(spanStartClose) {
+                    scannedString = string as NSString
                 }
+                scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: spanStartClose.count)
+                propStack.append(scannedString! as String)
             } else if(nextChar == "/") {
-                if #available(iOS 13.0, OSX 10.15, *) {
-                    scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: spanEnd.count)
-                } else {
-                    scanner.scanLocation += (spanEnd as NSString).length
-                }
+                scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: spanEnd.count)
                 propStack.removeLast()
             } else {
                 let attrScannedString = theme.applyStyleToString("<", styleList: propStack)
                 resultString.append(attrScannedString)
-                if #available(iOS 13.0, OSX 10.15, *) {
-                    scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
-                } else {
-                    scanner.scanLocation += 1
-                }
+                scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
             }
             
             scannedString = nil
