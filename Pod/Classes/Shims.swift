@@ -8,20 +8,16 @@
 
 import Foundation
 
-#if os(OSX)
-    import AppKit
+#if os(macOS)
+import AppKit
 #elseif os(iOS)
-    import UIKit
+import UIKit
 #endif
 
-#if swift(>=4.2)
-    public typealias AttributedStringKey = NSAttributedString.Key
-#else
-    public typealias AttributedStringKey = NSAttributedStringKey
-#endif
+public typealias AttributedStringKey = NSAttributedString.Key
 
-#if swift(>=4.2) && os(iOS)
-    public typealias TextStorageEditActions = NSTextStorage.EditActions
+#if os(iOS)
+public typealias TextStorageEditActions = NSTextStorage.EditActions
 #else
-    public typealias TextStorageEditActions = NSTextStorageEditActions
+public typealias TextStorageEditActions = NSTextStorageEditActions
 #endif

@@ -9,18 +9,15 @@
 import Foundation
 import JavaScriptCore
 
-#if os(OSX)
-    import AppKit
+#if os(macOS)
+import AppKit
 #endif
 
 /// Utility class for generating a highlighted NSAttributedString from a String.
-open class Highlightr
-{
+open class Highlightr {
     /// Returns the current Theme.
-    open var theme : Theme!
-    {
-        didSet
-        {
+    open var theme : Theme! {
+        didSet {
             themeChanged?(theme)
         }
     }
@@ -47,8 +44,7 @@ open class Highlightr
 
      - returns: Highlightr instance.
      */
-    public init?(highlightPath: String? = nil)
-    {
+    public init?(highlightPath: String? = nil) {
         let jsContext = JSContext()!
         let window = JSValue(newObjectIn: jsContext)
         jsContext.setObject(window, forKeyedSubscript: "window" as NSString)
@@ -59,28 +55,23 @@ open class Highlightr
         let bundle = Bundle(for: Highlightr.self)
         #endif
         self.bundle = bundle
-        guard let hgPath = highlightPath ?? bundle.path(forResource: "highlight.min", ofType: "js") else
-        {
+        guard let hgPath = highlightPath ?? bundle.path(forResource: "highlight.min", ofType: "js") else {
             return nil
         }
         
         let hgJs = try! String.init(contentsOfFile: hgPath)
         let value = jsContext.evaluateScript(hgJs)
-        if value?.toBool() != true
-        {
+        if value?.toBool() != true {
             return nil
         }
-        guard let hljs = window?.objectForKeyedSubscript("hljs") else
-        {
+        guard let hljs = window?.objectForKeyedSubscript("hljs") else {
             return nil
         }
         self.hljs = hljs
         
-        guard setTheme(to: "pojoaque") else
-        {
+        guard setTheme(to: "pojoaque") else {
             return nil
         }
-        
     }
     
     /**
@@ -91,15 +82,12 @@ open class Highlightr
      - returns: true if it was possible to set the given theme, false otherwise
      */
     @discardableResult
-    open func setTheme(to name: String) -> Bool
-    {
-        guard let defTheme = bundle.path(forResource: name+".min", ofType: "css") else
-        {
+    open func setTheme(to name: String) -> Bool {
+        guard let defTheme = bundle.path(forResource: name+".min", ofType: "css") else {
             return false
         }
         let themeString = try! String.init(contentsOfFile: defTheme)
         theme =  Theme(themeString: themeString)
-
         
         return true
     }
@@ -113,30 +101,28 @@ open class Highlightr
      
      - returns: NSAttributedString with the detected code highlighted.
      */
-    open func highlight(_ code: String, as languageName: String? = nil, fastRender: Bool = true) -> NSAttributedString?
-    {
+    open func highlight(
+        _ code: String,
+        as languageName: String? = nil,
+        fastRender: Bool = true
+    ) -> NSAttributedString? {
         let ret: JSValue
-        if let languageName = languageName
-        {
+        if let languageName = languageName {
             ret = hljs.invokeMethod("highlight", withArguments: [languageName, code, ignoreIllegals])
-        }else
-        {
+        } else {
             // language auto detection
             ret = hljs.invokeMethod("highlightAuto", withArguments: [code])
         }
 
         let res = ret.objectForKeyedSubscript("value")
-        guard var string = res!.toString() else
-        {
+        guard var string = res!.toString() else {
             return nil
         }
         
         var returnString : NSAttributedString?
-        if(fastRender)
-        {
+        if(fastRender) {
             returnString = processHTMLString(string)!
-        }else
-        {
+        } else {
             string = "<style>"+theme.lightTheme+"</style><pre><code class=\"hljs\">"+string+"</code></pre>"
             let opt: [NSAttributedString.DocumentReadingOptionKey : Any] = [
              .documentType: NSAttributedString.DocumentType.html,
@@ -183,116 +169,85 @@ open class Highlightr
     /**
      Execute the provided block in the main thread synchronously.
      */
-    private func safeMainSync(_ block: @escaping ()->())
-    {
-        if Thread.isMainThread
-        {
+    private func safeMainSync(_ block: @escaping ()->()) {
+        if Thread.isMainThread {
             block()
-        }else
-        {
+        } else {
             DispatchQueue.main.sync { block() }
         }
     }
     
-    private func processHTMLString(_ string: String) -> NSAttributedString?
-    {
+    private func processHTMLString(_ string: String) -> NSAttributedString? {
         let scanner = Scanner(string: string)
         scanner.charactersToBeSkipped = nil
         var scannedString: NSString?
         let resultString = NSMutableAttributedString(string: "")
         var propStack = ["hljs"]
         
-        while !scanner.isAtEnd
-        {
+        while !scanner.isAtEnd {
             var ended = false
             var didScanUpToHtmlStart = false
             
-            if #available(iOS 13.0, OSX 10.15, *)
-            {
-                if let string = scanner.scanUpToString(htmlStart)
-                {
+            if #available(iOS 13.0, OSX 10.15, *) {
+                if let string = scanner.scanUpToString(htmlStart) {
                     scannedString = string as NSString
                     didScanUpToHtmlStart = true
                 }
-            }
-            else
-            {
-                if scanner.scanUpTo(htmlStart, into: &scannedString)
-                {
+            } else {
+                if scanner.scanUpTo(htmlStart, into: &scannedString) {
                     didScanUpToHtmlStart = true
                 }
             }
             
-            if didScanUpToHtmlStart && scanner.isAtEnd
-            {
+            if didScanUpToHtmlStart && scanner.isAtEnd {
                 ended = true
             }
             
-            if scannedString != nil && scannedString!.length > 0
-            {
+            if scannedString != nil && scannedString!.length > 0 {
                 let attrScannedString = theme.applyStyleToString(scannedString! as String, styleList: propStack)
                 resultString.append(attrScannedString)
-                if ended
-                {
+                if ended {
                     continue
                 }
             }
             
             var nextChar: String
-            if #available(iOS 13.0, OSX 10.15, *)
-            {
+            if #available(iOS 13.0, OSX 10.15, *) {
                 scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
                 nextChar = String(scanner.string[scanner.currentIndex])
-            }
-            else
-            {
+            } else {
                 scanner.scanLocation += 1
                 let string = scanner.string as NSString
                 nextChar = string.substring(with: NSMakeRange(scanner.scanLocation, 1))
             }
             
-            if(nextChar == "s")
-            {
-                if #available(iOS 13.0, OSX 10.15, *)
-                {
+            if(nextChar == "s") {
+                if #available(iOS 13.0, OSX 10.15, *) {
                     scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: spanStart.count)
-                    if let string = scanner.scanUpToString(spanStartClose)
-                    {
+                    if let string = scanner.scanUpToString(spanStartClose) {
                         scannedString = string as NSString
                     }
                     scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: spanStartClose.count)
                     propStack.append(scannedString! as String)
-                }
-                else
-                {
+                } else {
                     scanner.scanLocation += (spanStart as NSString).length
                     scanner.scanUpTo(spanStartClose, into:&scannedString)
                     scanner.scanLocation += (spanStartClose as NSString).length
                     propStack.append(scannedString! as String)
                 }
-            }
-            else if(nextChar == "/")
-            {
-                if #available(iOS 13.0, OSX 10.15, *)
-                {
+            } else if(nextChar == "/") {
+                if #available(iOS 13.0, OSX 10.15, *) {
                     scanner.currentIndex = scanner.string.index(scanner.currentIndex, offsetBy: spanEnd.count)
-                }
-                else
-                {
+                } else {
                     scanner.scanLocation += (spanEnd as NSString).length
                 }
                 propStack.removeLast()
-            }
-            else
-            {
+            } else {
                 let attrScannedString = theme.applyStyleToString("<", styleList: propStack)
                 resultString.append(attrScannedString)
-                if #available(iOS 13.0, OSX 10.15, *)
-                {
+                if #available(iOS 13.0, OSX 10.15, *) {
                     scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
-                }
-                else
-                {
+                } else {
                     scanner.scanLocation += 1
                 }
             }
@@ -300,24 +255,21 @@ open class Highlightr
             scannedString = nil
         }
         
-        let results = htmlEscape.matches(in: resultString.string,
-                                               options: [.reportCompletion],
-                                               range: NSMakeRange(0, resultString.length))
+        let results = htmlEscape.matches(
+            in: resultString.string,
+            options: [.reportCompletion],
+            range: NSMakeRange(0, resultString.length)
+        )
         var locOffset = 0
-        for result in results
-        {
+        for result in results {
             let fixedRange = NSMakeRange(result.range.location-locOffset, result.range.length)
             let entity = (resultString.string as NSString).substring(with: fixedRange)
-            if let decodedEntity = HTMLUtils.decode(entity)
-            {
+            if let decodedEntity = HTMLUtils.decode(entity) {
                 resultString.replaceCharacters(in: fixedRange, with: String(decodedEntity))
                 locOffset += result.range.length-1;
             }
-            
-
         }
 
         return resultString
     }
-    
 }

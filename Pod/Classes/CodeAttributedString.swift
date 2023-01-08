@@ -8,10 +8,10 @@
 
 import Foundation
 
-#if os(OSX)
-    import AppKit
+#if os(macOS)
+import AppKit
 #elseif os(iOS)
-    import UIKit
+import UIKit
 #endif
 
 /// Highlighting Delegate
@@ -71,7 +71,7 @@ open class CodeAttributedString : NSTextStorage {
         setupListeners()
     }
     
-    #if os(OSX)
+    #if os(macOS)
     /// Initialize the CodeAttributedString
     required public init?(
         pasteboardPropertyList propertyList: Any,
