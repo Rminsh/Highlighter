@@ -3,21 +3,21 @@
 import PackageDescription
 
 let package = Package(
-    name: "Highlightr",
+    name: "Highlighter",
     platforms: [
         .macOS(.v10_13),
         .iOS(.v11),
     ],
     products: [
         .library(
-            name: "Highlightr",
-            targets: ["Highlightr"]
+            name: "Highlighter",
+            targets: ["Highlighter"]
         ),
     ],
     dependencies: [],
     targets: [
         .target(
-            name: "Highlightr",
+            name: "Highlighter",
             dependencies: [],
             path: "Pod",
             exclude: [
