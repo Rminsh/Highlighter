@@ -10,16 +10,8 @@ import Foundation
 
 #if os(iOS) || os(tvOS)
 import UIKit
-/// Typealias for UIColor
-public typealias RPColor = UIColor
-/// Typealias for UIFont
-public typealias RPFont = UIFont
-#else
+#elseif os(macOS)
 import AppKit
-/// Typealias for NSColor
-public typealias RPColor = NSColor
-/// Typealias for NSFont
-public typealias RPFont = NSFont
 #endif
 
 private typealias RPThemeDict = [String: [AnyHashable: AnyObject]]
@@ -106,7 +98,7 @@ open class Theme {
             ]
         )
         
-        #else
+        #elseif os(macOS)
         /// Bold font
         let boldDescriptor = NSFontDescriptor(
             fontAttributes: [
