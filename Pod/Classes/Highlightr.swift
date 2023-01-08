@@ -120,7 +120,7 @@ open class Highlightr {
         }
         
         var returnString : NSAttributedString?
-        if(fastRender) {
+        if fastRender {
             returnString = processHTMLString(string)!
         } else {
             string = "<style>"+theme.lightTheme+"</style><pre><code class=\"hljs\">"+string+"</code></pre>"
@@ -130,8 +130,7 @@ open class Highlightr {
              ]
             
             let data = string.data(using: String.Encoding.utf8)!
-            safeMainSync
-            {
+            safeMainSync {
                 returnString = try? NSMutableAttributedString(data:data, options: opt, documentAttributes:nil)
             }
         }
@@ -144,8 +143,7 @@ open class Highlightr {
      
      - returns: Array of Strings
      */
-    open func availableThemes() -> [String]
-    {
+    open func availableThemes() -> [String] {
         let paths = bundle.paths(forResourcesOfType: "css", inDirectory: nil) as [NSString]
         var result = [String]()
         for path in paths {
@@ -160,8 +158,7 @@ open class Highlightr {
      
      - returns: Array of Strings
      */
-    open func supportedLanguages() -> [String]
-    {
+    open func supportedLanguages() -> [String] {
         let res = hljs.invokeMethod("listLanguages", withArguments: [])
         return res!.toArray() as! [String]
     }
