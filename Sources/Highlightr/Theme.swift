@@ -42,7 +42,14 @@ open class Theme {
      */
     init(themeString: String) {
         theme = themeString
-        setCodeFont(RPFont(name: "SFMono-Regular", size: 14)!)
+        
+        if let sfMonoDescriptor = RPFont.systemFont(ofSize: 14).fontDescriptor.withDesign(.monospaced),
+           let sfMonoFont = RPFont(descriptor: sfMonoDescriptor, size: 14) {
+            setCodeFont(sfMonoFont)
+        } else {
+            setCodeFont(RPFont(name: "Courier", size: 14)!)
+        }
+        
         strippedTheme = stripTheme(themeString)
         lightTheme = strippedThemeToString(strippedTheme)
         themeDict = strippedThemeToTheme(strippedTheme)
