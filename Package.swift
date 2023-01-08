@@ -25,6 +25,7 @@ let package = Package(
             ],
             sources: [
                 "Highlightr",
+                "CodeEditor",
             ],
             resources: [
                 .copy("Assets/Highlighter/highlight.min.js"),
