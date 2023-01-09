@@ -44,7 +44,12 @@ open class Theme {
         theme = themeString
         
         if let sfMonoDescriptor = RPFont.systemFont(ofSize: 14).fontDescriptor.withDesign(.monospaced) {
-            setCodeFont(RPFont(descriptor: sfMonoDescriptor, size: 14))
+            #if os(iOS)
+            let font = RPFont(descriptor: sfMonoDescriptor, size: 14)
+            #elseif os(macOS)
+            let font = RPFont(descriptor: sfMonoDescriptor, size: 14) ?? RPFont(name: "Courier", size: 14)!
+            #endif
+            setCodeFont(font)
         } else {
             setCodeFont(RPFont(name: "Courier", size: 14)!)
         }
