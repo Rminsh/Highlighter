@@ -342,7 +342,7 @@ struct UXCodeTextViewRepresentable_Previews: PreviewProvider {
         """#
       ),
       selection   : nil,
-      language    : .tex,
+      language    : .plaintext,
       theme       : .pojoaque,
       fontSize    : nil,
       flags       : [ .selectable ],

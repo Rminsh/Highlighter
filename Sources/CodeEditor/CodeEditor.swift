@@ -188,7 +188,7 @@ public struct CodeEditor: View {
    * Default auto pairing mappings for languages.
    */
   public static var defaultAutoPairs : [ Language : [ String : String ] ] = [
-    .c: cStyleAutoPairs, .cpp: cStyleAutoPairs, .objectivec: cStyleAutoPairs,
+    .c: cStyleAutoPairs, .cpp: cStyleAutoPairs, .objectiveC: cStyleAutoPairs,
     .swift: cStyleAutoPairs,
     .java: cStyleAutoPairs, .javascript: cStyleAutoPairs,
     .xml: xmlStyleAutoPairs,
@@ -337,7 +337,7 @@ struct CodeEditor_Previews: PreviewProvider {
       #"""
       The quadratic formula is $-b \pm \sqrt{b^2 - 4ac} \over 2a$
       \bye
-      """#, language: .tex
+      """#, language: .plaintext
     )
     .frame(width: 540, height: 200)
   }
