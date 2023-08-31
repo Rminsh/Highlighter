@@ -109,12 +109,10 @@ struct UXCodeTextViewRepresentable : UXViewRepresentable {
         }
         textViewDidChange(textView: textView)
       }    
-    #elseif os(iOS)
+    #else
       public func textViewDidChange(_ textView: UITextView) {
         textViewDidChange(textView: textView)
       }
-    #else
-      #error("Unsupported OS")
     #endif
       
     private func textViewDidChange(textView: UXTextView) {
@@ -139,12 +137,10 @@ struct UXCodeTextViewRepresentable : UXViewRepresentable {
         
         textViewDidChangeSelection(textView: textView as! UXCodeTextView)
       }
-    #elseif os(iOS)
+    #else
       public func textViewDidChangeSelection(_ textView: UITextView) {
         textViewDidChangeSelection(textView: textView as! UXCodeTextView)
       }
-    #else
-      #error("Unsupported OS")
     #endif
       
     private func textViewDidChangeSelection(textView: UXCodeTextView) {
@@ -214,10 +210,8 @@ struct UXCodeTextViewRepresentable : UXViewRepresentable {
         let nsrange = NSRange(range, in: textView.string)
         #if os(macOS)
           textView.setSelectedRange(nsrange)
-        #elseif os(iOS)
-          textView.selectedRange = nsrange
         #else
-          #error("Unsupported OS")
+          textView.selectedRange = nsrange
         #endif
         
         if autoscroll {

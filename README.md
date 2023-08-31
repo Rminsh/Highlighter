@@ -1,7 +1,7 @@
 # Highlighter
 
 ![highlight.js version](https://img.shields.io/badge/highlight.js-11.7.0-yellow?logo=javascript)
-![Supported platforms](https://img.shields.io/badge/Platforms-iOS%2013.0+%20|%20macOS%2011.0-white?logo=apple)
+![Supported platforms](https://img.shields.io/badge/Platforms-iOS%2013.0+%20|%20macOS%2011.0+%20|visionOS%201.0+-white?logo=apple)
 
 Highlighter is an iOS & macOS syntax highlighter built with Swift. This library is forked of original [Highlightr](https://github.com/raspu/Highlightr) and combined with [Code Editor](https://github.com/ZeeZide/CodeEditor). Also it uses [highlight.js](https://highlightjs.org/) as it core, supports [185 languages and comes with 89 styles](https://highlightjs.org/static/demo/).
 

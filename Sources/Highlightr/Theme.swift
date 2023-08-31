@@ -8,9 +8,9 @@
 
 import Foundation
 
-#if os(iOS) || os(tvOS)
+#if canImport(UIKit)
 import UIKit
-#elseif os(macOS)
+#elseif canImport(AppKit)
 import AppKit
 #endif
 
@@ -44,10 +44,10 @@ open class Theme {
         theme = themeString
         
         if let sfMonoDescriptor = RPFont.systemFont(ofSize: 14).fontDescriptor.withDesign(.monospaced) {
-            #if os(iOS)
-            let font = RPFont(descriptor: sfMonoDescriptor, size: 14)
-            #elseif os(macOS)
+            #if os(macOS)
             let font = RPFont(descriptor: sfMonoDescriptor, size: 14) ?? RPFont(name: "Courier", size: 14)!
+            #else
+            let font = RPFont(descriptor: sfMonoDescriptor, size: 14)
             #endif
             setCodeFont(font)
         } else {
@@ -86,7 +86,7 @@ open class Theme {
     open func setCodeFont(_ font: RPFont) {
         codeFont = font
         
-        #if os(iOS) || os(tvOS)
+        #if canImport(UIKit)
         /// Bold font
         let boldDescriptor = UIFontDescriptor(
             fontAttributes: [

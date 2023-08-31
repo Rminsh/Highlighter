@@ -7,7 +7,7 @@
 
 import Foundation
 
-#if os(iOS)
+#if canImport(UIKit)
 
 import UIKit
 
@@ -15,7 +15,7 @@ public typealias RPColor = UIColor
 public typealias RPFont = UIFont
 public typealias TextStorageEditActions = NSTextStorage.EditActions
 
-#elseif os(macOS)
+#elseif canImport(AppKit)
 
 import AppKit
 
