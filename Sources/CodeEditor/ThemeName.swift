@@ -22,6 +22,7 @@ public extension CodeEditor.ThemeName {
 
   static var `default` = pojoaque
   
+  static var atomOneDark  = CodeEditor.ThemeName(rawValue: "atom-one-dark")
   static var pojoaque  = CodeEditor.ThemeName(rawValue: "pojoaque")
   static var agate     = CodeEditor.ThemeName(rawValue: "agate")
   static var ocean     = CodeEditor.ThemeName(rawValue: "ocean")

@@ -44,6 +44,7 @@ open class Highlightr {
         guard let jsContext = JSContext() else {
             return nil
         }
+        
         let bundle = Bundle.module
         self.bundle = bundle
         guard let hgPath = highlightPath ?? bundle.path(forResource: "highlight.min", ofType: "js") else {
@@ -53,7 +54,7 @@ open class Highlightr {
         do {
             let hgJs = try String.init(contentsOfFile: hgPath)
             jsContext.evaluateScript(hgJs)
-            self.hljs = jsContext.evaluateScript("hljs")
+            self.hljs = jsContext.globalObject.objectForKeyedSubscript("hljs")
             guard setTheme(to: "pojoaque") else {
                 return nil
             }

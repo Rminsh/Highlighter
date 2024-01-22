@@ -39,6 +39,7 @@ let package = Package(
                 .copy("Assets/styles/arta.css"),
                 .copy("Assets/styles/ascetic.css"),
                 .copy("Assets/styles/atom-one-dark-reasonable.css"),
+                .copy("Assets/styles/atom-one-dark-reasonable.min.css"),
                 .copy("Assets/styles/atom-one-dark.css"),
                 .copy("Assets/styles/atom-one-light.css"),
                 .copy("Assets/styles/base16/3024.css"),
