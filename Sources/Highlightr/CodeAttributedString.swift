@@ -71,7 +71,7 @@ open class CodeAttributedString : NSTextStorage {
         setupListeners()
     }
     
-    #if os(macOS)
+    #if canImport(AppKit)
     /// Initialize the CodeAttributedString
     required public init?(
         pasteboardPropertyList propertyList: Any,

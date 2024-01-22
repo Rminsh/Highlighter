@@ -9,10 +9,6 @@
 import Foundation
 import JavaScriptCore
 
-#if os(macOS)
-import AppKit
-#endif
-
 /// Utility class for generating a highlighted NSAttributedString from a String.
 open class Highlightr {
     /// Returns the current Theme.

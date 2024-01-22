@@ -44,7 +44,7 @@ open class Theme {
         theme = themeString
         
         if let sfMonoDescriptor = RPFont.systemFont(ofSize: 14).fontDescriptor.withDesign(.monospaced) {
-            #if os(macOS)
+            #if canImport(AppKit)
             let font = RPFont(descriptor: sfMonoDescriptor, size: 14) ?? RPFont(name: "Courier", size: 14)!
             #else
             let font = RPFont(descriptor: sfMonoDescriptor, size: 14)
@@ -109,7 +109,7 @@ open class Theme {
             ]
         )
         
-        #elseif os(macOS)
+        #elseif canImport(AppKit)
         /// Bold font
         let boldDescriptor = NSFontDescriptor(
             fontAttributes: [
