@@ -19,16 +19,14 @@ public extension CodeEditor {
 }
 
 public extension CodeEditor.ThemeName {
-
-  static var `default` = pojoaque
-  
-  static var atomOneDark  = CodeEditor.ThemeName(rawValue: "atom-one-dark")
-  static var pojoaque  = CodeEditor.ThemeName(rawValue: "pojoaque")
-  static var agate     = CodeEditor.ThemeName(rawValue: "agate")
-  static var ocean     = CodeEditor.ThemeName(rawValue: "ocean")
-  
-  static var atelierSavannaLight =
-               CodeEditor.ThemeName(rawValue: "atelier-savanna-light")
-  static var atelierSavannaDark =
-               CodeEditor.ThemeName(rawValue: "atelier-savanna-dark")
+    static var `default` = xcode
+    
+    static var atomOneDark = CodeEditor.ThemeName(rawValue: "atom-one-dark")
+    static var pojoaque = CodeEditor.ThemeName(rawValue: "pojoaque")
+    static var agate = CodeEditor.ThemeName(rawValue: "agate")
+    static var ocean = CodeEditor.ThemeName(rawValue: "ocean")
+    static var atelierSavannaLight = CodeEditor.ThemeName(rawValue: "atelier-savanna-light")
+    static var atelierSavannaDark = CodeEditor.ThemeName(rawValue: "atelier-savanna-dark")
+    static var xcode = CodeEditor.ThemeName(rawValue: "xcode")
+    static var xcodeDark = CodeEditor.ThemeName(rawValue: "xcode-dark")
 }
