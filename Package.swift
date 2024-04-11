@@ -225,7 +225,6 @@ let package = Package(
                 .copy("Assets/styles/default.css"),
                 .copy("Assets/styles/devibeans.css"),
                 .copy("Assets/styles/docco.css"),
-                .copy("Assets/styles/far.css"),
                 .copy("Assets/styles/felipec.css"),
                 .copy("Assets/styles/foundation.css"),
                 .copy("Assets/styles/github-dark-dimmed.css"),
