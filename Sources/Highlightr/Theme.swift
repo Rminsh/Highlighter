@@ -374,3 +374,11 @@ open class Theme {
         return RPColor(red: CGFloat(r) / divisor, green: CGFloat(g) / divisor, blue: CGFloat(b) / divisor, alpha: CGFloat(1))
     }
 }
+
+extension RPColor {
+    func isLight() -> Bool {
+        guard let components = cgColor.components, components.count > 2 else { return true }
+        let brightness = ((components[0] * 299) + (components[1] * 587) + (components[2] * 114)) / 1000
+        return (brightness > 0.5)
+    }
+}
