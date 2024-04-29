@@ -8,6 +8,10 @@
 
 import SwiftUI
 
+#if os(iOS)
+import KeyboardToolbar
+#endif
+
 #if canImport(AppKit)
 typealias UXViewRepresentable = NSViewRepresentable
 #else
@@ -224,6 +228,60 @@ struct UXCodeTextViewRepresentable : UXViewRepresentable {
         textView.isSelectable = flags.contains(.selectable)
     }
     
+    #if os(iOS)
+    private func setupKeyboardTools(textView: UXCodeTextView, keyboardToolbarView: KeyboardToolbarView) {
+        keyboardToolbarView.groups = [
+            KeyboardToolGroup(items: [
+                KeyboardToolGroupItem(style: .secondary, representativeTool: BlockKeyboardTool(symbolName: "arrow.right.to.line") {
+                    textView.insertText("\t")
+                })
+            ]),
+            KeyboardToolGroup(items: [
+                KeyboardToolGroupItem(representativeTool: InsertTextKeyboardTool(text: "(", textView: textView), tools: [
+                    InsertTextKeyboardTool(text: "(", textView: textView),
+                    InsertTextKeyboardTool(text: "{", textView: textView),
+                    InsertTextKeyboardTool(text: "[", textView: textView),
+                    InsertTextKeyboardTool(text: "]", textView: textView),
+                    InsertTextKeyboardTool(text: "}", textView: textView),
+                    InsertTextKeyboardTool(text: ")", textView: textView)
+                ]),
+                KeyboardToolGroupItem(representativeTool: InsertTextKeyboardTool(text: ".", textView: textView), tools: [
+                    InsertTextKeyboardTool(text: ".", textView: textView),
+                    InsertTextKeyboardTool(text: ",", textView: textView),
+                    InsertTextKeyboardTool(text: ";", textView: textView),
+                    InsertTextKeyboardTool(text: "!", textView: textView),
+                    InsertTextKeyboardTool(text: "&", textView: textView),
+                    InsertTextKeyboardTool(text: "|", textView: textView)
+                ]),
+                KeyboardToolGroupItem(representativeTool: InsertTextKeyboardTool(text: "=", textView: textView), tools: [
+                    InsertTextKeyboardTool(text: "=", textView: textView),
+                    InsertTextKeyboardTool(text: "+", textView: textView),
+                    InsertTextKeyboardTool(text: "-", textView: textView),
+                    InsertTextKeyboardTool(text: "/", textView: textView),
+                    InsertTextKeyboardTool(text: "*", textView: textView),
+                    InsertTextKeyboardTool(text: "<", textView: textView),
+                    InsertTextKeyboardTool(text: ">", textView: textView)
+                ]),
+                KeyboardToolGroupItem(representativeTool: InsertTextKeyboardTool(text: "#", textView: textView), tools: [
+                    InsertTextKeyboardTool(text: "#", textView: textView),
+                    InsertTextKeyboardTool(text: "\"", textView: textView),
+                    InsertTextKeyboardTool(text: "'", textView: textView),
+                    InsertTextKeyboardTool(text: "$", textView: textView),
+                    InsertTextKeyboardTool(text: "\\", textView: textView),
+                    InsertTextKeyboardTool(text: "@", textView: textView),
+                    InsertTextKeyboardTool(text: "%", textView: textView),
+                    InsertTextKeyboardTool(text: "~", textView: textView)
+                ])
+            ]),
+            KeyboardToolGroup(items: [
+                KeyboardToolGroupItem(style: .primary, representativeTool: BlockKeyboardTool(symbolName: "keyboard.chevron.compact.down") {
+                    textView.resignFirstResponder()
+                })
+            ])
+        ]
+    }
+    #endif
+    
     #if canImport(AppKit)
     public func makeNSView(context: Context) -> NSScrollView {
         let textView = UXCodeTextView()
@@ -260,9 +318,16 @@ struct UXCodeTextViewRepresentable : UXViewRepresentable {
     }
     public func makeUIView(context: Context) -> UITextView {
         let textView = UXCodeTextView()
+        
+        #if os(iOS)
+        let keyboardToolbarView: KeyboardToolbarView = KeyboardToolbarView()
+        textView.inputAccessoryView = keyboardToolbarView
+        #endif
+        
         textView.autoresizingMask   = [ .flexibleWidth, .flexibleHeight ]
         textView.delegate           = context.coordinator
         textView.textContainerInset = edgeInsets
+        
         #if canImport(UIKit)
         textView.autocapitalizationType = .none
         textView.smartDashesType = .no
@@ -270,7 +335,13 @@ struct UXCodeTextViewRepresentable : UXViewRepresentable {
         textView.spellCheckingType = .no
         textView.smartQuotesType = .no
         #endif
+        
         updateTextView(textView)
+        
+        #if os(iOS)
+        setupKeyboardTools(textView: textView, keyboardToolbarView: keyboardToolbarView)
+        #endif
+        
         return textView
     }
     

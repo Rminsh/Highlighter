@@ -6,7 +6,7 @@ let package = Package(
     name: "Highlighter",
     platforms: [
         .macOS(.v11),
-        .iOS(.v13),
+        .iOS(.v14),
         .visionOS(.v1),
     ],
     products: [
@@ -15,11 +15,19 @@ let package = Package(
             targets: ["Highlighter"]
         ),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/simonbs/KeyboardToolbar.git", .upToNextMinor(from: "0.1.1"))
+    ],
     targets: [
         .target(
             name: "Highlighter",
-            dependencies: [],
+            dependencies: [
+                .product(
+                    name: "KeyboardToolbar",
+                    package: "KeyboardToolbar",
+                    condition: .when(platforms: [.iOS])
+                )
+            ],
             path: "Sources",
             exclude: [
                 "Assets/Highlighter/LICENSE",
